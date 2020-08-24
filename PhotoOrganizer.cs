@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace photo_organizer {
@@ -38,10 +32,6 @@ namespace photo_organizer {
                     listView1.Items.Add(item);
                 }
             }
-        }
-
-        private void directoryTextBox_TextChanged(object sender,EventArgs e) {
-
         }
 
         private void catagory1Button_Click(object sender,EventArgs e) {
