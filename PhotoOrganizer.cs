@@ -46,9 +46,10 @@ namespace photo_organizer {
 
         private void catagory1Button_Click(object sender,EventArgs e) {
             string catagory1 = catagory1TextBox.Text;
-            //try {
+            try {
                 catagorize(catagory1,listView1.SelectedItems[0],listView1);
-            //} catch { }
+                listView1.Refresh();
+            } catch { }
         }
 
         private void catagory2Button_Click(object sender,EventArgs e) {
@@ -83,8 +84,13 @@ namespace photo_organizer {
         }
 
         private void catagorize(string catagoryName, ListViewItem item, ListView listView) {
+            if(catagoryName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars())!=-1) {
+                MessageBox.Show("Invalid file name");
+                return;
+            }
+            ListViewItem temp = item;
             string sourceFile = System.IO.Path.Combine(item.SubItems[2].Text, item.SubItems[0].Text);
-            string destFolder = System.IO.Path.Combine(item.SubItems[2].Text,catagoryName);
+            string destFolder = System.IO.Path.Combine(item.SubItems[2].Text, catagoryName);
             string destFile = System.IO.Path.Combine(destFolder, item.SubItems[0].Text);
             System.IO.Directory.CreateDirectory(destFolder);
             if(!File.Exists(destFile)) {
@@ -93,7 +99,17 @@ namespace photo_organizer {
             if(File.Exists(destFile)) {
                 System.IO.File.Delete(sourceFile);
             }
+            listView.SelectedItems[0].Remove();
             listView.Refresh();
+            if(listView.Items.Count>0) {
+                listView.Items[0].Selected=true;
+                listView.Select();
+                Image image = GetCopyImage(listView1.SelectedItems[0].SubItems[2].Text+"\\"+listView1.SelectedItems[0].SubItems[0].Text);
+                pictureBox1.Image=image;
+            }
+            else {
+                pictureBox1.Image=null;
+            }
         }
 
         private Image GetCopyImage(string path) {
